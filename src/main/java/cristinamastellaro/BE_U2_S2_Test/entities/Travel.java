@@ -13,17 +13,18 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class Travel {
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private UUID id;
     @Column(nullable = false)
     private String destination;
     @Column(nullable = false)
     private LocalDate date;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private StateTravel state;
 
     // Da come la traccia è scritta (e come spesso succede), penso che ogni viaggio sia associato a un unico dipendente
@@ -32,4 +33,16 @@ public class Travel {
     @JsonIgnore
     @OneToMany
     private List<Booking> bookings;
+
+    public Travel(String destination, LocalDate date, Employee employee) {
+        this.destination = destination;
+        this.date = date;
+        this.employee = employee;
+        state = StateTravel.PROGRAMMED;
+    }
+
+    public Travel(String destination, LocalDate date, Employee employee, StateTravel state) {
+        this(destination, date, employee);
+        this.state = state;
+    }
 }

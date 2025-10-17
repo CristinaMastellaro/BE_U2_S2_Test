@@ -1,5 +1,6 @@
 package cristinamastellaro.BE_U2_S2_Test.exceptions;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.ErrorsValidationPayload;
 import cristinamastellaro.BE_U2_S2_Test.payloads.GeneralErrorDTO;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,20 @@ public class ExceptionsHandler {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
+    @ExceptionHandler(EmployeeBusyException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralErrorDTO handleEmployeeAlreadyBookedExc(EmployeeBusyException e) {
+        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralErrorDTO handleEmployeeAlreadyBookedExc(InvalidFormatException e) {
+        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
+
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public GeneralErrorDTO handleGeneralExc(Exception e) {
         e.getStackTrace();
         return new GeneralErrorDTO("There were issues on the server side. We will fix them as soon as possible", LocalDateTime.now());
