@@ -69,6 +69,7 @@ public class TravelController {
             } else if (e.getClass() == IdNotFoundException.class) {
                 throw new IdNotFoundException(travelId);
             } else {
+                e.getStackTrace();
                 throw new ChangeStateException();
             }
         }
