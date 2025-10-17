@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -87,5 +88,20 @@ public class TravelService {
         Travel found = findTravelById(id);
         tRepo.delete(found);
         log.info("Travel successfully deleted!");
+    }
+
+    public Travel addEmployeeToTravel(UUID travelId, Map<String, UUID> employee) {
+        // Cerchiamo il viaggio e il dipendente
+        Travel travel = findTravelById(travelId);
+        UUID employeeId = employee.get("employee");
+        Employee emp = eServ.findEmployeeById(employeeId);
+
+        travel.setEmployee(emp);
+
+        tRepo.save(travel);
+
+        log.info("The employee " + emp.getName() + " is now the guide for the travel to " + travel.getDestination());
+        return travel;
+
     }
 }

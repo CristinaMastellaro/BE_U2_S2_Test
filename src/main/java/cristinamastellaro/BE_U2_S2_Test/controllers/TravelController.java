@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -48,5 +49,10 @@ public class TravelController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTravelById(@PathVariable UUID travelId) {
         tServ.deleteTravel(travelId);
+    }
+
+    @PatchMapping("/{travelId}")
+    public Travel changeEmployee(@PathVariable UUID travelId, @RequestBody Map<String, UUID> employeeId) {
+        return tServ.addEmployeeToTravel(travelId, employeeId);
     }
 }
