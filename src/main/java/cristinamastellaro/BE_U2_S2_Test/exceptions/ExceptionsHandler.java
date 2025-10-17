@@ -62,6 +62,12 @@ public class ExceptionsHandler {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
+    @ExceptionHandler(ChangeStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralErrorDTO handleChangeStateExc(ChangeStateException e) {
+        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
+
 //    @ExceptionHandler(InvalidFormatException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
 //    public GeneralErrorDTO handleEmployeeAlreadyBookedExc(InvalidFormatException e) {
