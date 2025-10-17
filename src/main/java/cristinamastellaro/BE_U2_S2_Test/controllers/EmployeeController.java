@@ -38,4 +38,11 @@ public class EmployeeController {
     public Employee findEmployeeById(@PathVariable UUID employeeId) {
         return eServ.findEmployeeById(employeeId);
     }
+
+    @PutMapping("/{employeeId}")
+    public Employee updateEmployee(@PathVariable UUID employeeId, @RequestBody @Validated EmployeePayload eP, BindingResult validation) {
+        if (validation.hasErrors())
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
+        return eServ.updateEmployee(employeeId, eP);
+    }
 }

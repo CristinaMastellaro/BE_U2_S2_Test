@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -39,5 +40,23 @@ public class EmployeeService {
 
     public Employee findEmployeeById(UUID id) {
         return eRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    }
+
+    public Employee updateEmployee(UUID id, EmployeePayload newInfo) {
+        Employee emp = findEmployeeById(id);
+        // Accertiamoci anche qui che email e username non siano già in uso
+        if (!Objects.equals(emp.getEmail(), newInfo.email()) && eRepo.existsByEmail(newInfo.email()))
+            throw new EmailAlreadyUsedException(newInfo.email());
+        if (!Objects.equals(emp.getUsername(), newInfo.username()) && eRepo.existsByUsername(newInfo.username()))
+            throw new UsernameAlreadyUsed(newInfo.username());
+
+        emp.setEmail(newInfo.email());
+        emp.setName(newInfo.name());
+        emp.setSurname(newInfo.surname());
+        emp.setUsername(newInfo.username());
+
+        eRepo.save(emp);
+        log.info("The employee's info has been correctly updated!");
+        return emp;
     }
 }
