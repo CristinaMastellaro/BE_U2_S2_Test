@@ -35,4 +35,11 @@ public class TravelController {
     public Travel findTravelById(@PathVariable UUID travelId) {
         return tServ.findTravelById(travelId);
     }
+
+    @PutMapping("/{travelId}")
+    public Travel updateTravelById(@PathVariable UUID travelId, @RequestBody @Validated TravelPayload tP, BindingResult validation) {
+        if (validation.hasErrors())
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
+        return tServ.updateTravel(travelId, tP);
+    }
 }

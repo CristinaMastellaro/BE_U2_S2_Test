@@ -39,7 +39,7 @@ public class TravelService {
         if (!travelsOnDate.isEmpty()) {
             for (Travel travel : travelsOnDate) {
                 if (travel.getEmployee().getId() == newTravel.employeeId())
-                    throw new EmployeeBusyException(travel.getEmployee().getName(), travel.getDate());
+                    throw new EmployeeBusyException(travel.getEmployee().getName(), travel.getEmployee().getId(), travel.getDate());
             }
         }
 
@@ -52,5 +52,35 @@ public class TravelService {
 
     public Travel findTravelById(UUID id) {
         return tRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    }
+
+    public Travel updateTravel(UUID id, TravelPayload tP) {
+        Travel travelToUpdate = findTravelById(id);
+
+        //Assicuriamoci che l'id dell'employee esista
+        Employee emp = eServ.findEmployeeById(tP.employeeId());
+
+        // Anche in questo caso assicuriamoci che la nuova data, se è stata cambiata, sia libera per il dipendente
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(tP.date(), formatter);
+        if (travelToUpdate.getDate() != date) {
+            List<Travel> travelsOnDate = tRepo.findByDate(date);
+            if (!travelsOnDate.isEmpty()) {
+                for (Travel travel : travelsOnDate) {
+                    if (travel.getEmployee().getId() == tP.employeeId())
+                        throw new EmployeeBusyException(travel.getEmployee().getName(), travel.getEmployee().getId(), travel.getDate());
+                }
+            }
+        }
+
+        travelToUpdate.setDestination(tP.destination());
+        travelToUpdate.setDate(date);
+        travelToUpdate.setEmployee(emp);
+
+        tRepo.save(travelToUpdate);
+
+        log.info("Travel updated successfully");
+        return travelToUpdate;
+
     }
 }
