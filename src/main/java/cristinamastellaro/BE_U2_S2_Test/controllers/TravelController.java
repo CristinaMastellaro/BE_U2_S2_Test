@@ -5,6 +5,7 @@ import cristinamastellaro.BE_U2_S2_Test.exceptions.PayloadValidationException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.TravelPayload;
 import cristinamastellaro.BE_U2_S2_Test.services.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -41,5 +42,11 @@ public class TravelController {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return tServ.updateTravel(travelId, tP);
+    }
+
+    @DeleteMapping("/{travelId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTravelById(@PathVariable UUID travelId) {
+        tServ.deleteTravel(travelId);
     }
 }

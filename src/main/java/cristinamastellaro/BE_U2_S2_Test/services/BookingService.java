@@ -1,0 +1,44 @@
+package cristinamastellaro.BE_U2_S2_Test.services;
+
+import cristinamastellaro.BE_U2_S2_Test.entities.Booking;
+import cristinamastellaro.BE_U2_S2_Test.entities.Travel;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
+import cristinamastellaro.BE_U2_S2_Test.payloads.BookingPayload;
+import cristinamastellaro.BE_U2_S2_Test.repositories.BookingRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@Slf4j
+public class BookingService {
+    @Autowired
+    private BookingRepository bRepo;
+    @Autowired
+    private TravelService tServ;
+
+    public List<Booking> findAll() {
+        return bRepo.findAll();
+    }
+
+    public Booking saveBooking(BookingPayload bP) {
+        // Non ci sono particolari controlli da effettuare
+        Travel travel = tServ.findTravelById(bP.travelId());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(bP.dateOfRequest(), formatter);
+        Booking booking = new Booking(date, travel, bP.notes());
+        bRepo.save(booking);
+        log.info("The travel to " + travel.getDestination() + " has been successfully booked!");
+        return booking;
+    }
+
+    public Booking findBookingById(UUID id) {
+        return bRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    }
+}

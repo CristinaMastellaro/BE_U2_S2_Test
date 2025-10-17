@@ -1,16 +1,17 @@
 package cristinamastellaro.BE_U2_S2_Test.entities;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name = "bookings")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Booking {
     @Id
     @GeneratedValue
@@ -22,4 +23,14 @@ public class Booking {
 
     @ManyToOne
     private Travel travel;
+
+    public Booking(LocalDate dateOfRequest, Travel travel) {
+        this.dateOfRequest = dateOfRequest;
+        this.travel = travel;
+    }
+
+    public Booking(LocalDate dateOfRequest, Travel travel, String preferencesOrNotes) {
+        this(dateOfRequest, travel);
+        this.preferencesOrNotes = preferencesOrNotes;
+    }
 }

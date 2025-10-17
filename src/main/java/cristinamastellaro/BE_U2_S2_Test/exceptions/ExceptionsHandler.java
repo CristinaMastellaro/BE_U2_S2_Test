@@ -1,6 +1,5 @@
 package cristinamastellaro.BE_U2_S2_Test.exceptions;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.ErrorsValidationPayload;
 import cristinamastellaro.BE_U2_S2_Test.payloads.GeneralErrorDTO;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,8 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ExceptionsHandler {
+
+    // Mettere errore per numero di caratteri dell'UUID?
 
     @ExceptionHandler(PayloadValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -43,11 +44,11 @@ public class ExceptionsHandler {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
-    @ExceptionHandler(InvalidFormatException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public GeneralErrorDTO handleEmployeeAlreadyBookedExc(InvalidFormatException e) {
-        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
-    }
+//    @ExceptionHandler(InvalidFormatException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public GeneralErrorDTO handleEmployeeAlreadyBookedExc(InvalidFormatException e) {
+//        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+//    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

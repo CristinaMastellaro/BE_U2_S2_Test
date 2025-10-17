@@ -81,6 +81,11 @@ public class TravelService {
 
         log.info("Travel updated successfully");
         return travelToUpdate;
+    }
 
+    public void deleteTravel(UUID id) {
+        Travel found = findTravelById(id);
+        tRepo.delete(found);
+        log.info("Travel successfully deleted!");
     }
 }
