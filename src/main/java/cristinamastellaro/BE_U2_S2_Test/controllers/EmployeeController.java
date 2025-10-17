@@ -45,4 +45,10 @@ public class EmployeeController {
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return eServ.updateEmployee(employeeId, eP);
     }
+
+    @DeleteMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEmployee(@PathVariable UUID employeeId) {
+        eServ.deleteEmployee(employeeId);
+    }
 }

@@ -59,4 +59,10 @@ public class EmployeeService {
         log.info("The employee's info has been correctly updated!");
         return emp;
     }
+
+    public void deleteEmployee(UUID id) {
+        Employee found = findEmployeeById(id);
+        eRepo.delete(found);
+        log.info("Employee's info has been deleted");
+    }
 }
