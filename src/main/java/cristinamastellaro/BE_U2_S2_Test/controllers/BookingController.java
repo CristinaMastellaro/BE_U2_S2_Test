@@ -44,5 +44,11 @@ public class BookingController {
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return bServ.updateBookingById(bookingId, bP);
     }
+
+    @DeleteMapping("/{bookingId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBooking(@PathVariable UUID bookingId) {
+        bServ.deleteBooking(bookingId);
+    }
 }
 

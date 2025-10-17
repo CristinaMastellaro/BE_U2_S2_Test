@@ -56,4 +56,10 @@ public class BookingService {
         log.info("The booking with id " + id + " has been successfully updated!");
         return bookingToUpdate;
     }
+
+    public void deleteBooking(UUID id) {
+        Booking bookingToDelete = findBookingById(id);
+        bRepo.delete(bookingToDelete);
+        log.info("The booking has been successfully deleted");
+    }
 }
