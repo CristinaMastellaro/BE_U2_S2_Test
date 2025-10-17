@@ -12,11 +12,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class Employee {
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private UUID id;
     @Column(nullable = false)
     private String username;
@@ -26,8 +26,17 @@ public class Employee {
     private String surname;
     @Column(nullable = false)
     private String email;
+    private String picture;
 
     @JsonIgnore
     @OneToMany(mappedBy = "employee")
     private List<Travel> travels;
+
+    public Employee(String username, String name, String surname, String email) {
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        picture = "https://ui-avatars.com/api/?name" + name + "+" + surname;
+    }
 }
