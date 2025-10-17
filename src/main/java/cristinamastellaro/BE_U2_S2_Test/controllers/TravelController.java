@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/travels")
@@ -28,5 +29,10 @@ public class TravelController {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return tServ.saveTravel(tP);
+    }
+
+    @GetMapping("/{travelId}")
+    public Travel findTravelById(@PathVariable UUID travelId) {
+        return tServ.findTravelById(travelId);
     }
 }

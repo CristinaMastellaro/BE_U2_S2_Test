@@ -3,6 +3,7 @@ package cristinamastellaro.BE_U2_S2_Test.services;
 import cristinamastellaro.BE_U2_S2_Test.entities.Employee;
 import cristinamastellaro.BE_U2_S2_Test.entities.Travel;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.EmployeeBusyException;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.TravelPayload;
 import cristinamastellaro.BE_U2_S2_Test.repositories.TravelRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -46,5 +48,9 @@ public class TravelService {
         tRepo.save(travel);
         log.info("The travel with destination " + newTravel.destination() + " has been saved for the date " + newTravel.date());
         return travel;
+    }
+
+    public Travel findTravelById(UUID id) {
+        return tRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
     }
 }
