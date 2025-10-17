@@ -2,6 +2,7 @@ package cristinamastellaro.BE_U2_S2_Test.services;
 
 import cristinamastellaro.BE_U2_S2_Test.entities.Employee;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.EmailAlreadyUsedException;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.UsernameAlreadyUsed;
 import cristinamastellaro.BE_U2_S2_Test.payloads.EmployeePayload;
 import cristinamastellaro.BE_U2_S2_Test.repositories.EmployeeRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -33,5 +35,9 @@ public class EmployeeService {
         log.info("The employee has been registered correctly!");
 
         return employee;
+    }
+
+    public Employee findEmployeeById(UUID id) {
+        return eRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
     }
 }

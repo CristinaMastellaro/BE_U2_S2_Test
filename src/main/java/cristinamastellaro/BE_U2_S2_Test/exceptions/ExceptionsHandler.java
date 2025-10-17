@@ -29,4 +29,16 @@ public class ExceptionsHandler {
     public GeneralErrorDTO handleUsernameAlreadyUSedExc(UsernameAlreadyUsed e) {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(IdNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public GeneralErrorDTO handleIdNotFoundExc(IdNotFoundException e) {
+        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public GeneralErrorDTO handleGeneralExc(Exception e) {
+        e.getStackTrace();
+        return new GeneralErrorDTO("There were issues on the server side. We will fix them as soon as possible", LocalDateTime.now());
+    }
 }

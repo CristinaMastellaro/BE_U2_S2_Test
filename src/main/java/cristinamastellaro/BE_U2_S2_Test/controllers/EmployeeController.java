@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/employees")
@@ -19,6 +20,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService eServ;
 
+    // Metti la paginazione, se hai tempo
     @GetMapping
     public List<Employee> getAllEmployees() {
         return eServ.findAll();
@@ -30,5 +32,10 @@ public class EmployeeController {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return eServ.saveEmployee(employee);
+    }
+
+    @GetMapping("/{employeeId}")
+    public Employee findEmployeeById(@PathVariable UUID employeeId) {
+        return eServ.findEmployeeById(employeeId);
     }
 }
