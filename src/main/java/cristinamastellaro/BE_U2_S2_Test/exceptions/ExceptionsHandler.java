@@ -50,6 +50,18 @@ public class ExceptionsHandler {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
+    @ExceptionHandler(EmptyFileException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralErrorDTO handleEmptyFileExc(EmptyFileException e) {
+        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(WhileUploadingPictureException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public GeneralErrorDTO handleWhileUploadingPictureExc(WhileUploadingPictureException e) {
+        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
+
 //    @ExceptionHandler(InvalidFormatException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
 //    public GeneralErrorDTO handleEmployeeAlreadyBookedExc(InvalidFormatException e) {

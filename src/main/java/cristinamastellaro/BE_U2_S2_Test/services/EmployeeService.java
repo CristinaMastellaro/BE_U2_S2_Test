@@ -1,16 +1,19 @@
 package cristinamastellaro.BE_U2_S2_Test.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import cristinamastellaro.BE_U2_S2_Test.entities.Employee;
-import cristinamastellaro.BE_U2_S2_Test.exceptions.EmailAlreadyUsedException;
-import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
-import cristinamastellaro.BE_U2_S2_Test.exceptions.UsernameAlreadyUsed;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.*;
 import cristinamastellaro.BE_U2_S2_Test.payloads.EmployeePayload;
 import cristinamastellaro.BE_U2_S2_Test.repositories.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,6 +22,8 @@ import java.util.UUID;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository eRepo;
+    @Autowired
+    private Cloudinary imageUploader;
 
     public List<Employee> findAll() {
         return eRepo.findAll();
@@ -64,5 +69,22 @@ public class EmployeeService {
         Employee found = findEmployeeById(id);
         eRepo.delete(found);
         log.info("Employee's info has been deleted");
+    }
+
+    public Employee updatePictureEmployee(UUID id, MultipartFile picture) {
+        Employee emp = findEmployeeById(id);
+        if (picture.isEmpty()) throw new EmptyFileException();
+
+        try {
+            Map result = imageUploader.uploader().upload(picture.getBytes(), ObjectUtils.emptyMap());
+            String imageUrl = (String) result.get("url");
+            emp.setPicture(imageUrl);
+            eRepo.save(emp);
+            log.info("The picture has been uploaded");
+            return emp;
+        } catch (IOException e) {
+            throw new WhileUploadingPictureException(e.getMessage());
+        }
+
     }
 }

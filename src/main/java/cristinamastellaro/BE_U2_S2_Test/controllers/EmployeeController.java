@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,5 +51,10 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable UUID employeeId) {
         eServ.deleteEmployee(employeeId);
+    }
+
+    @PatchMapping("/{employeeId}/picture")
+    public Employee updatePicture(@PathVariable UUID employeeId, @RequestParam("picture") MultipartFile picture) {
+        return eServ.updatePictureEmployee(employeeId, picture);
     }
 }
