@@ -1,9 +1,11 @@
 package cristinamastellaro.BE_U2_S2_Test.services;
 
 import cristinamastellaro.BE_U2_S2_Test.entities.Employee;
+import cristinamastellaro.BE_U2_S2_Test.entities.StateTravel;
 import cristinamastellaro.BE_U2_S2_Test.entities.Travel;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.EmployeeBusyException;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.WrongStateException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.TravelPayload;
 import cristinamastellaro.BE_U2_S2_Test.repositories.TravelRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -102,6 +104,20 @@ public class TravelService {
 
         log.info("The employee " + emp.getName() + " is now the guide for the travel to " + travel.getDestination());
         return travel;
+    }
 
+    public Travel changeState(UUID travelId, Map<String, String> newState) {
+        Travel travelToUpdate = findTravelById(travelId);
+        String state = newState.get("state");
+        StateTravel sTravel = switch (state.toLowerCase()) {
+            case "completed" -> StateTravel.COMPLETED;
+            case "programmed" -> StateTravel.PROGRAMMED;
+            default -> throw new WrongStateException();
+        };
+
+        travelToUpdate.setState(sTravel);
+        tRepo.save(travelToUpdate);
+        log.info("The state of the travel has been successfully updated to " + state);
+        return travelToUpdate;
     }
 }

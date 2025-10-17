@@ -51,8 +51,13 @@ public class TravelController {
         tServ.deleteTravel(travelId);
     }
 
-    @PatchMapping("/{travelId}")
+    @PatchMapping("/{travelId}/employee")
     public Travel changeEmployee(@PathVariable UUID travelId, @RequestBody Map<String, UUID> employeeId) {
         return tServ.addEmployeeToTravel(travelId, employeeId);
+    }
+
+    @PatchMapping("/{travelId}/state")
+    public Travel changeState(@PathVariable UUID travelId, @RequestBody Map<String, String> newState) {
+        return tServ.changeState(travelId, newState);
     }
 }
