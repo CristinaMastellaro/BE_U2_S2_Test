@@ -41,4 +41,19 @@ public class BookingService {
     public Booking findBookingById(UUID id) {
         return bRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
     }
+
+    public Booking updateBookingById(UUID id, BookingPayload newInfo) {
+        Booking bookingToUpdate = findBookingById(id);
+        Travel newTravel = tServ.findTravelById(newInfo.travelId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(newInfo.dateOfRequest(), formatter);
+
+        bookingToUpdate.setDateOfRequest(date);
+        bookingToUpdate.setTravel(newTravel);
+        bookingToUpdate.setPreferencesOrNotes(newInfo.notes());
+
+        bRepo.save(bookingToUpdate);
+        log.info("The booking with id " + id + " has been successfully updated!");
+        return bookingToUpdate;
+    }
 }

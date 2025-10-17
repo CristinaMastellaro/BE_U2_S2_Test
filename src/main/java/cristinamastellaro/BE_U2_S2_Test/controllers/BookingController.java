@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/bookings")
@@ -30,6 +31,18 @@ public class BookingController {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return bServ.saveBooking(bP);
+    }
+
+    @GetMapping("/{bookingId}")
+    public Booking findBookingById(@PathVariable UUID bookingId) {
+        return bServ.findBookingById(bookingId);
+    }
+
+    @PutMapping("/{bookingId}")
+    public Booking updateBookingById(@PathVariable UUID bookingId, @RequestBody @Validated BookingPayload bP, BindingResult validation) {
+        if (validation.hasErrors())
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
+        return bServ.updateBookingById(bookingId, bP);
     }
 }
 
