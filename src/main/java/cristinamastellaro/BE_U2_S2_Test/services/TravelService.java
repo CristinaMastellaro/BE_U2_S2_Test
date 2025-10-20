@@ -4,7 +4,7 @@ import cristinamastellaro.BE_U2_S2_Test.entities.Employee;
 import cristinamastellaro.BE_U2_S2_Test.entities.StateTravel;
 import cristinamastellaro.BE_U2_S2_Test.entities.Travel;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.EmployeeBusyException;
-import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.NotFoundException;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.WrongStateException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.TravelPayload;
 import cristinamastellaro.BE_U2_S2_Test.repositories.TravelRepository;
@@ -54,7 +54,7 @@ public class TravelService {
     }
 
     public Travel findTravelById(UUID id) {
-        return tRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+        return tRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     public Travel updateTravel(UUID id, TravelPayload tP) {

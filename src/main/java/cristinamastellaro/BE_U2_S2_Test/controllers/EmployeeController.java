@@ -27,14 +27,6 @@ public class EmployeeController {
         return eServ.findAll();
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Employee saveEmployee(@RequestBody @Validated EmployeePayload employee, BindingResult validation) {
-        if (validation.hasErrors())
-            throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
-        return eServ.saveEmployee(employee);
-    }
-
     @GetMapping("/{employeeId}")
     public Employee findEmployeeById(@PathVariable UUID employeeId) {
         return eServ.findEmployeeById(employeeId);

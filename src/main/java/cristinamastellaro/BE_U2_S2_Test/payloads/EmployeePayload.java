@@ -16,6 +16,8 @@ public record EmployeePayload(
         String surname,
         @Email(message = "The string is not an email")
         @NotBlank(message = "The email cannot be blank")
-        String email
+        String email,
+        @NotBlank(message = "The password must not be blank")
+        String password
 ) {
 }

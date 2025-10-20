@@ -32,9 +32,9 @@ public class ExceptionsHandler {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
-    @ExceptionHandler(IdNotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public GeneralErrorDTO handleIdNotFoundExc(IdNotFoundException e) {
+    public GeneralErrorDTO handleIdNotFoundExc(NotFoundException e) {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
@@ -68,11 +68,11 @@ public class ExceptionsHandler {
         return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
     }
 
-//    @ExceptionHandler(InvalidFormatException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public GeneralErrorDTO handleEmployeeAlreadyBookedExc(InvalidFormatException e) {
-//        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
-//    }
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public GeneralErrorDTO handleUnauthorizedExc(UnauthorizedException e) {
+        return new GeneralErrorDTO(e.getMessage(), LocalDateTime.now());
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -27,16 +27,18 @@ public class Employee {
     @Column(nullable = false)
     private String email;
     private String picture;
+    private String password;
 
     @JsonIgnore
     @OneToMany(mappedBy = "employee")
     private List<Travel> travels;
 
-    public Employee(String username, String name, String surname, String email) {
+    public Employee(String username, String name, String surname, String email, String password) {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.password = password;
         picture = "https://ui-avatars.com/api/?name" + name + "+" + surname;
     }
 }

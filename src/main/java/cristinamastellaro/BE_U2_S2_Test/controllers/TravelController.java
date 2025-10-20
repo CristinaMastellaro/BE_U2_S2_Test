@@ -2,7 +2,7 @@ package cristinamastellaro.BE_U2_S2_Test.controllers;
 
 import cristinamastellaro.BE_U2_S2_Test.entities.Travel;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.ChangeStateException;
-import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.NotFoundException;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.PayloadValidationException;
 import cristinamastellaro.BE_U2_S2_Test.exceptions.WrongStateException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.TravelPayload;
@@ -66,8 +66,8 @@ public class TravelController {
         } catch (Exception e) {
             if (e.getClass() == WrongStateException.class) {
                 throw new WrongStateException();
-            } else if (e.getClass() == IdNotFoundException.class) {
-                throw new IdNotFoundException(travelId);
+            } else if (e.getClass() == NotFoundException.class) {
+                throw new NotFoundException(travelId);
             } else {
                 e.getStackTrace();
                 throw new ChangeStateException();

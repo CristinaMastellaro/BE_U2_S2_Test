@@ -34,7 +34,7 @@ public class EmployeeService {
         if (eRepo.existsByEmail(employeePayload.email())) throw new EmailAlreadyUsedException(employeePayload.email());
         if (eRepo.existsByUsername(employeePayload.username()))
             throw new UsernameAlreadyUsed(employeePayload.username());
-        Employee employee = new Employee(employeePayload.username(), employeePayload.name(), employeePayload.surname(), employeePayload.email());
+        Employee employee = new Employee(employeePayload.username(), employeePayload.name(), employeePayload.surname(), employeePayload.email(), employeePayload.password());
 
         eRepo.save(employee);
 
@@ -44,7 +44,7 @@ public class EmployeeService {
     }
 
     public Employee findEmployeeById(UUID id) {
-        return eRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+        return eRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     public Employee updateEmployee(UUID id, EmployeePayload newInfo) {
@@ -86,5 +86,9 @@ public class EmployeeService {
             throw new WhileUploadingPictureException(e.getMessage());
         }
 
+    }
+
+    public Employee findEmployeeByEmail(String email) {
+        return eRepo.findByEmail(email).orElseThrow(() -> new NotFoundException(email));
     }
 }

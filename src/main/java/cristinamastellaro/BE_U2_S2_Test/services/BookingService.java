@@ -2,7 +2,7 @@ package cristinamastellaro.BE_U2_S2_Test.services;
 
 import cristinamastellaro.BE_U2_S2_Test.entities.Booking;
 import cristinamastellaro.BE_U2_S2_Test.entities.Travel;
-import cristinamastellaro.BE_U2_S2_Test.exceptions.IdNotFoundException;
+import cristinamastellaro.BE_U2_S2_Test.exceptions.NotFoundException;
 import cristinamastellaro.BE_U2_S2_Test.payloads.BookingPayload;
 import cristinamastellaro.BE_U2_S2_Test.repositories.BookingRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class BookingService {
     }
 
     public Booking findBookingById(UUID id) {
-        return bRepo.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+        return bRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     public Booking updateBookingById(UUID id, BookingPayload newInfo) {
