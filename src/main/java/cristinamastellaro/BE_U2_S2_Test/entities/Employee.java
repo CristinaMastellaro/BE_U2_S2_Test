@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @ToString
-@JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonExpired", "credentialsNonExpired"})
+@JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class Employee implements UserDetails {
     @Id
     @GeneratedValue
@@ -49,6 +49,7 @@ public class Employee implements UserDetails {
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
         picture = "https://ui-avatars.com/api/?name" + name + "+" + surname;
     }
 

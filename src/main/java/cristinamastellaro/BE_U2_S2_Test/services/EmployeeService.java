@@ -8,6 +8,7 @@ import cristinamastellaro.BE_U2_S2_Test.payloads.EmployeePayload;
 import cristinamastellaro.BE_U2_S2_Test.repositories.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,8 @@ public class EmployeeService {
     private EmployeeRepository eRepo;
     @Autowired
     private Cloudinary imageUploader;
+    @Autowired
+    private PasswordEncoder bCrypt;
 
     public List<Employee> findAll() {
         return eRepo.findAll();
@@ -34,7 +37,7 @@ public class EmployeeService {
         if (eRepo.existsByEmail(employeePayload.email())) throw new EmailAlreadyUsedException(employeePayload.email());
         if (eRepo.existsByUsername(employeePayload.username()))
             throw new UsernameAlreadyUsed(employeePayload.username());
-        Employee employee = new Employee(employeePayload.username(), employeePayload.name(), employeePayload.surname(), employeePayload.email(), employeePayload.password());
+        Employee employee = new Employee(employeePayload.username(), employeePayload.name(), employeePayload.surname(), employeePayload.email(), bCrypt.encode(employeePayload.password()));
 
         eRepo.save(employee);
 
