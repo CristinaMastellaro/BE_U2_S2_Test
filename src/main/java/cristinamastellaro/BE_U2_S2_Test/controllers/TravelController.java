@@ -9,6 +9,7 @@ import cristinamastellaro.BE_U2_S2_Test.payloads.TravelPayload;
 import cristinamastellaro.BE_U2_S2_Test.services.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +31,7 @@ public class TravelController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Travel saveTravel(@RequestBody @Validated TravelPayload tP, BindingResult validation) {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
@@ -42,6 +44,7 @@ public class TravelController {
     }
 
     @PutMapping("/{travelId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Travel updateTravelById(@PathVariable UUID travelId, @RequestBody @Validated TravelPayload tP, BindingResult validation) {
         if (validation.hasErrors())
             throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
@@ -50,11 +53,13 @@ public class TravelController {
 
     @DeleteMapping("/{travelId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteTravelById(@PathVariable UUID travelId) {
         tServ.deleteTravel(travelId);
     }
 
     @PatchMapping("/{travelId}/employee")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Travel changeEmployee(@PathVariable UUID travelId, @RequestBody Map<String, UUID> employeeId) {
         return tServ.addEmployeeToTravel(travelId, employeeId);
     }

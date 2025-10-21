@@ -30,4 +30,12 @@ public class JWTTools {
             throw new UnauthorizedException("Not valid token, login again");
         }
     }
+
+    public UUID extractIdFromToken(String token) {
+        return UUID.fromString(Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject());
+    }
 }
